@@ -1,0 +1,2381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurora — Fine Dining & Fast Food, Rajshahi</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Outfit:wght@300;400;500;600;700&family=Dancing+Script:wght@600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --orange: #F97316;
+      --orange-dark: #C2410C;
+      --orange-light: #FED7AA;
+      --gold: #FBBF24;
+      --cream: #FFFBF5;
+      --dark: #1C0A00;
+      --dark-mid: #3B1A07;
+      --text-muted: #8B5E3C;
+      --white: #FFFFFF;
+      --radius: 28px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #ECEAE6;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── CURSOR ─── */
+    .cursor {
+      width: 18px;
+      height: 18px;
+      background: var(--orange);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: multiply;
+      transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .cursor.hovered {
+      width: 40px;
+      height: 40px;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      .cursor {
+        display: none;
+      }
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 5%;
+      background: rgba(255, 251, 245, 0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(249, 115, 22, 0.12);
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 12px 5%;
+      box-shadow: 0 4px 30px rgba(249, 115, 22, 0.15);
+    }
+
+    nav.hero-mode {
+      background: transparent;
+      backdrop-filter: none;
+      border-bottom-color: transparent;
+      box-shadow: none;
+    }
+
+    nav.hero-mode .nav-links a {
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    nav.hero-mode .nav-links a:hover {
+      color: white;
+    }
+
+    nav.hero-mode .nav-links a:hover::after {
+      background: white;
+    }
+
+    nav.hero-mode .nav-logo {
+      color: white;
+    }
+
+    nav.hero-mode .nav-logo span {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    nav.hero-mode .logo-star {
+      color: #FBBF24;
+    }
+
+    nav.hero-mode .btn-outline {
+      border-color: white;
+      color: white;
+    }
+
+    nav.hero-mode .btn-outline:hover {
+      background: white;
+      color: var(--orange);
+    }
+
+    nav.hero-mode .btn-solid {
+      background: white;
+      color: var(--orange-dark);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    nav.hero-mode .hamburger span {
+      background: white;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--orange-dark);
+      letter-spacing: -1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo span {
+      color: var(--orange);
+    }
+
+    .logo-star {
+      font-size: 0.8rem;
+      color: var(--gold);
+      animation: spin-slow 6s linear infinite;
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark-mid);
+      font-weight: 500;
+      font-size: 0.95rem;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--orange);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--orange);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      border: 2px solid var(--orange);
+      background: transparent;
+      color: var(--orange);
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      background: var(--orange);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-solid {
+      background: var(--orange);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+      transition: all 0.3s;
+    }
+
+    .btn-solid:hover {
+      background: var(--orange-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(249, 115, 22, 0.5);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 1100;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2.5px;
+      background: var(--dark);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #D95E0A 0%, #F97316 50%, #FBB824 100%);
+      z-index: 1050;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      overflow: hidden;
+    }
+
+    .mobile-menu::before {
+      content: '';
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 50%;
+      top: -80px;
+      right: -80px;
+    }
+
+    .mobile-menu::after {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      bottom: -60px;
+      left: -60px;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+      display: flex;
+    }
+
+    /* Mobile menu close button */
+    .mobile-menu-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 2;
+    }
+
+    .mobile-menu-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(90deg);
+    }
+
+    /* Mobile menu logo */
+    .mobile-menu-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -1px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0.95;
+      z-index: 2;
+    }
+
+    .mobile-menu-logo .logo-star {
+      color: #FBBF24;
+      font-size: 0.9rem;
+    }
+
+    /* Mobile nav links */
+    .mobile-menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 80%;
+      max-width: 320px;
+      z-index: 2;
+    }
+
+    .mobile-menu-nav a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 22px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      transition: all 0.25s;
+      backdrop-filter: blur(4px);
+    }
+
+    .mobile-menu-nav a:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateX(6px);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .mobile-menu-nav a i {
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    /* Mobile menu footer */
+    .mobile-menu-footer {
+      margin-top: 36px;
+      display: flex;
+      gap: 14px;
+      z-index: 2;
+    }
+
+    .mobile-menu-footer a {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .mobile-menu-footer a:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 78vh;
+      background: linear-gradient(145deg, #D95E0A 0%, #F97316 35%, #FA9A20 65%, #FBB824 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+      margin: 16px 16px 70px;
+      border-radius: 36px;
+      box-shadow: 0 30px 80px rgba(249, 115, 22, 0.4);
+      z-index: 1;
+    }
+
+    /* Decorative dots inside hero */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 50%;
+      bottom: 30%;
+      right: 8%;
+      z-index: 4;
+      box-shadow:
+        28px 55px 0 4px rgba(255, 255, 255, 0.2),
+        -18px 90px 0 3px rgba(255, 255, 255, 0.18),
+        55px 110px 0 6px rgba(249, 115, 22, 0.9);
+      pointer-events: none;
+    }
+
+    /* Concave wave bottom-right — body-color circle overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: -110px;
+      right: -110px;
+      width: 280px;
+      height: 280px;
+      background: #ECEAE6;
+      border-radius: 50%;
+      z-index: 8;
+      pointer-events: none;
+    }
+
+    .hero-bg-circles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-bg-circles circle {
+      fill: rgba(255, 255, 255, 0.06);
+    }
+
+    .floating-blob {
+      display: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      flex: 1;
+      padding: 72px 7% 100px 7%;
+      min-height: 78vh;
+      display: block;
+      z-index: 2;
+    }
+
+    .hero-text {
+      color: white;
+      max-width: 48%;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fade-up 0.8s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(5.5rem, 10vw, 9.5rem);
+      font-weight: 900;
+      line-height: 0.88;
+      margin-bottom: 16px;
+      color: white;
+      opacity: 0;
+      animation: fade-up 0.8s 0.4s forwards;
+    }
+
+    .hero-title-small {
+      display: block;
+      font-size: 0.26em;
+      font-weight: 400;
+      font-family: 'Outfit', sans-serif;
+      opacity: 0.88;
+      margin-bottom: 6px;
+      letter-spacing: 0;
+    }
+
+    .hero-food-line {
+      display: block;
+      line-height: 0.88;
+    }
+
+    .hero-title .script-word {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.6rem, 2.8vw, 3.2rem);
+      color: rgba(255, 255, 255, 0.92);
+      display: block;
+      margin-top: -0.2em;
+      padding-left: 48%;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.7;
+      max-width: 440px;
+      margin: 24px 0 36px;
+      opacity: 0;
+      animation: fade-up 0.8s 0.6s forwards;
+    }
+
+    .hero-price-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      opacity: 0;
+      animation: fade-up 0.8s 0.8s forwards;
+    }
+
+    .hero-price {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: white;
+    }
+
+    .hero-price small {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 400;
+    }
+
+    .hero-delivery-icons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      opacity: 0;
+      animation: fade-up 0.8s 1s forwards;
+      margin-top: 20px;
+    }
+
+    .delivery-badge {
+      background: white;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--orange-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ─── PLATE SHOWCASE ─── */
+    .hero-plate-zone {
+      position: absolute;
+      right: -30px;
+      top: -25px;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .plate-wrapper {
+      position: relative;
+      width: 470px;
+      height: 470px;
+    }
+
+    .plate-item {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      overflow: hidden;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.85);
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3), 0 0 0 14px white, 0 0 0 18px rgba(255, 255, 255, 0.3);
+    }
+
+    .plate-item.active {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .plate-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 8s ease;
+    }
+
+    .plate-item.active img {
+      transform: scale(1.05);
+    }
+
+    /* Emoji plate placeholders with gradient backgrounds */
+    .plate-emoji {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10rem;
+      background: radial-gradient(circle at 40% 40%, #fff8f0, #ffe0c4);
+    }
+
+    .plate-ring {
+      display: none;
+    }
+
+    .plate-dots {
+      position: absolute;
+      inset: -36px;
+      border-radius: 50%;
+      animation: spin-slow 30s linear infinite reverse;
+      pointer-events: none;
+    }
+
+    .plate-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    .slide-indicators {
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+
+    .slide-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .slide-dot.active {
+      width: 24px;
+      border-radius: 4px;
+      background: white;
+    }
+
+    /* Mini card bottom-left */
+    .mini-card {
+      position: absolute;
+      bottom: 32px;
+      left: 7%;
+      background: white;
+      border-radius: 20px;
+      padding: 14px 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 270px;
+      z-index: 10;
+      animation: slide-in-card 1s 1.2s both;
+    }
+
+    .mini-card-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #1C0A00, #3B1A07);
+    }
+
+    .mini-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .mini-card-info h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--orange-dark);
+    }
+
+    .mini-card-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.4;
+      max-width: 140px;
+    }
+
+    .mini-card-price {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--orange);
+      margin-top: 4px;
+    }
+
+    /* ─── WAVE SEPARATOR ─── */
+    .wave-sep {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .wave-sep svg {
+      display: block;
+    }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: 90px 8%;
+    }
+
+    .section-eyebrow {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4rem;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--dark);
+    }
+
+    .section-title span {
+      color: var(--orange);
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-top: 12px;
+    }
+
+    /* ─── BRANCHES ─── */
+    .branches-section {
+      background: var(--dark);
+      color: white;
+    }
+
+    .branches-section .section-title {
+      color: white;
+    }
+
+    .branches-section .section-eyebrow {
+      color: var(--gold);
+    }
+
+    .branches-section .section-sub {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .branches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .branch-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .branch-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .branch-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(249, 115, 22, 0.4);
+    }
+
+    .branch-card:hover::before {
+      opacity: 1;
+    }
+
+    .branch-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.4);
+    }
+
+    .branch-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .branch-card p {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.5;
+    }
+
+    .branch-tag {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: rgba(249, 115, 22, 0.2);
+      color: var(--orange-light);
+    }
+
+    .branch-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22C55E;
+      box-shadow: 0 0 8px 3px rgba(34, 197, 94, 0.4);
+    }
+
+    /* ─── MENU ─── */
+    .menu-section {
+      background: var(--cream);
+    }
+
+    .menu-tabs {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 40px 0 48px;
+    }
+
+    .tab-btn {
+      padding: 10px 24px;
+      border-radius: 50px;
+      border: 2px solid transparent;
+      background: white;
+      color: var(--dark-mid);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .tab-btn:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    .tab-btn.active {
+      background: var(--orange);
+      color: white;
+      border-color: var(--orange);
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.35);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 28px;
+    }
+
+    .menu-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    .menu-card-img {
+      height: 200px;
+      background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease;
+    }
+
+    .menu-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .menu-card:hover .menu-card-img img {
+      transform: scale(1.08);
+    }
+
+    .menu-card-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--orange);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .menu-card-body {
+      padding: 20px;
+    }
+
+    .menu-card-body h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .menu-card-body p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .menu-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px 20px;
+    }
+
+    .menu-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--orange);
+    }
+
+    .add-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+    }
+
+    .add-btn:hover {
+      background: var(--orange-dark);
+      transform: scale(1.15);
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.5);
+    }
+
+    .menu-like-btn {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .menu-like-btn:hover,
+    .menu-like-btn.liked {
+      color: #EF4444;
+      background: white;
+    }
+
+    .menu-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 5px;
+    }
+
+    .menu-rating {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      margin-top: 6px;
+    }
+
+    .menu-rating span {
+      color: var(--text-muted);
+      margin-left: 4px;
+      font-size: 0.72rem;
+    }
+
+    /* ─── DELIVERY SECTION ─── */
+    .delivery-section {
+      background: linear-gradient(135deg, var(--orange-dark) 0%, var(--orange) 60%, var(--gold) 100%);
+      color: white;
+      text-align: center;
+      border-radius: 40px;
+      margin: 0 5%;
+      padding: 80px 8%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .delivery-section::before {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 50%;
+      top: -150px;
+      right: -100px;
+    }
+
+    .delivery-section::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 50%;
+      bottom: -120px;
+      left: -80px;
+    }
+
+    .delivery-section .section-title {
+      color: white;
+      margin: 12px 0;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+    }
+
+    .delivery-section .section-eyebrow {
+      color: var(--gold);
+    }
+
+    .delivery-section p {
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .delivery-platforms {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .platform-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      color: var(--dark);
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+
+    .platform-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    }
+
+    .platform-btn .fa-brands {
+      font-size: 1.3rem;
+    }
+
+    .fp-pink {
+      color: #EE2D5B;
+    }
+
+    .fb-blue {
+      color: #1877F2;
+    }
+
+    .delivery-stats {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2.5rem;
+      font-weight: 900;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* ─── GALLERY ─── */
+    .gallery-section {
+      background: white;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 220px 220px;
+      gap: 16px;
+      margin-top: 50px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .gal-item {
+      background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .gal-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .gal-item:hover {
+      transform: scale(1.03);
+      z-index: 2;
+    }
+
+    .gal-item:hover img {
+      transform: scale(1.06);
+    }
+
+    .gal-item:nth-child(1) {
+      grid-column: span 2;
+    }
+
+    .gal-item:nth-child(4) {
+      grid-row: span 2;
+      grid-column: 4;
+    }
+
+    .gal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(249, 115, 22, 0.0);
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      transition: background 0.3s;
+    }
+
+    .gal-item:hover .gal-overlay {
+      background: rgba(249, 115, 22, 0.2);
+    }
+
+    .gal-label {
+      font-weight: 700;
+      color: white;
+      font-size: 1rem;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+    }
+
+    .gal-item:hover .gal-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-section {
+      background: var(--cream);
+    }
+
+    .reviews-track {
+      display: flex;
+      gap: 24px;
+      margin-top: 50px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .reviews-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .review-card {
+      min-width: 320px;
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
+
+    .review-stars {
+      color: var(--gold);
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    .review-text {
+      font-size: 0.95rem;
+      color: var(--dark-mid);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .reviewer-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: white;
+      font-weight: 700;
+    }
+
+    .reviewer-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .reviewer-loc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── CTA BANNER ─── */
+    .cta-banner {
+      background: var(--dark);
+      color: white;
+      text-align: center;
+      padding: 80px 8%;
+    }
+
+    .cta-banner .section-title {
+      color: white;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      margin: 12px 0 24px;
+    }
+
+    .cta-banner .section-eyebrow {
+      color: var(--orange);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      color: rgba(255, 255, 255, 0.6);
+      padding: 60px 8% 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+
+    .footer-brand .nav-logo {
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .footer-brand p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 260px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .social-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .social-btn:hover {
+      background: var(--orange);
+      transform: translateY(-3px);
+    }
+
+    .footer-col h4 {
+      color: white;
+      font-weight: 700;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col ul li a {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--orange);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+
+    .footer-bottom a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spin-slow {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes blob-float {
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+
+      50% {
+        transform: translateY(-20px) scale(1.05);
+      }
+    }
+
+    @keyframes slide-in-card {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes plate-float {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      }
+
+      25% {
+        transform: translate(-50%, -52%) scale(1.01) rotate(1deg);
+      }
+
+      75% {
+        transform: translate(-50%, -48%) scale(0.99) rotate(-1deg);
+      }
+    }
+
+    .plate-item.active {
+      animation: plate-float 6s ease-in-out infinite;
+    }
+
+    /* Intersection observer reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: 0.4s;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+      }
+
+      .gal-item:nth-child(1) {
+        grid-column: span 2;
+      }
+
+      .gal-item:nth-child(4) {
+        grid-row: auto;
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero {
+        margin: 12px 12px 40px;
+        border-radius: 28px;
+        min-height: auto;
+      }
+
+      .hero-inner {
+        padding: 80px 6% 140px;
+        min-height: auto;
+      }
+
+      .hero-text {
+        max-width: 100%;
+        text-align: center;
+      }
+
+      .hero-desc {
+        margin: 0 auto;
+      }
+
+      .hero-price-row,
+      .hero-delivery-icons {
+        justify-content: center;
+      }
+
+      .hero-plate-zone {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 100%;
+        height: 280px;
+        margin-top: 20px;
+      }
+
+      .plate-wrapper {
+        width: 260px;
+        height: 260px;
+      }
+
+      .plate-item {
+        width: 240px;
+        height: 240px;
+      }
+
+      .mini-card {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        min-width: 240px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gal-item:nth-child(1) {
+        grid-column: span 2;
+      }
+
+      .gal-item:nth-child(4) {
+        grid-column: auto;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      section {
+        padding: 60px 6%;
+      }
+
+      .delivery-section {
+        margin: 0 3%;
+      }
+    }
+
+    /* ─── ORDER DARK BUTTON ─── */
+    .btn-order-dark {
+      background: var(--dark);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-order-dark:hover {
+      background: #000;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ─── SCROLL TO TOP ─── */
+    #scroll-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 500;
+    }
+
+    #scroll-top.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #scroll-top:hover {
+      transform: translateY(-4px);
+    }
+
+    /* ─── NOTIFICATION TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      right: 28px;
+      background: var(--dark);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 600;
+      max-width: 260px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast .fa {
+      color: var(--orange);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Cursor -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"><i class="fa fa-check-circle fa"></i><span id="toast-msg">Added to cart!</span></div>
+
+  <!-- Scroll Top -->
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fa fa-arrow-up"></i>
+  </button>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <!-- Close Button -->
+    <button class="mobile-menu-close" onclick="closeMobileMenu()">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <!-- Logo -->
+    <div class="mobile-menu-logo">
+      <i class="fas fa-star logo-star"></i> Au<span style="color:rgba(255,255,255,0.8)">rora</span>
+    </div>
+
+    <!-- Nav Links -->
+    <div class="mobile-menu-nav">
+      <a href="#hero" onclick="closeMobileMenu()">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="#branches" onclick="closeMobileMenu()">
+        <i class="fas fa-store"></i> Our Branches
+      </a>
+      <a href="#menu" onclick="closeMobileMenu()">
+        <i class="fas fa-utensils"></i> Menu
+      </a>
+      <a href="#gallery" onclick="closeMobileMenu()">
+        <i class="fas fa-images"></i> Gallery
+      </a>
+      <a href="#delivery" onclick="closeMobileMenu()">
+        <i class="fas fa-motorcycle"></i> Order Online
+      </a>
+      <a href="#contact" onclick="closeMobileMenu()">
+        <i class="fas fa-envelope"></i> Contact Us
+      </a>
+    </div>
+
+    <!-- Social Links -->
+    <div class="mobile-menu-footer">
+      <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-logo">
+      <i class="fas fa-star logo-star"></i> Au<span>rora</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="#branches"><i class="fas fa-store"></i> Branches</a></li>
+      <li><a href="#menu"><i class="fas fa-utensils"></i> Menu</a></li>
+      <li><a href="#gallery"><i class="fas fa-images"></i> Gallery</a></li>
+      <li><a href="#delivery"><i class="fas fa-motorcycle"></i> Order Online</a></li>
+    </ul>
+    <div class="nav-cta">
+      <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-envelope"></i> Contact Us
+      </button>
+      <button class="btn-solid" onclick="showToast('Redirecting to order...'); setTimeout(()=>{},1500)">
+        <i class="fas fa-bag-shopping"></i> Order Now
+      </button>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ════ HERO ════ -->
+  <section class="hero" id="hero">
+    <div class="floating-blob"></div>
+    <div class="floating-blob"></div>
+    <div class="floating-blob"></div>
+
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow"><i class="fas fa-utensils"></i> Rajshahi's Finest Restaurant</p>
+        <h1 class="hero-title">
+          <span class="hero-title-small">Delicious Every</span>
+          <span class="hero-food-line">FOOD<span class="script-word">bite</span></span>
+        </h1>
+        <p class="hero-desc">
+          Aurora brings you an extraordinary culinary journey — from sizzling BBQ and juicy burgers to authentic pizza
+          and fast food favourites. Four branches across Rajshahi, one passion: your perfect meal.
+        </p>
+        <div class="hero-price-row">
+          <div class="hero-price">৳299 <small>starting from</small></div>
+          <button class="btn-order-dark" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">
+            <i class="fas fa-bolt"></i> ORDER NOW
+          </button>
+        </div>
+        <div class="hero-delivery-icons">
+          <div class="delivery-badge"><i class="fa-brands fa-facebook" style="color:#1877F2"></i> Order via Facebook
+          </div>
+          <div class="delivery-badge"><i class="fas fa-motorcycle" style="color:#EE2D5B"></i> Foodpanda</div>
+        </div>
+      </div>
+
+      <!-- Plate Showcase -->
+      <div class="hero-plate-zone">
+        <div class="plate-wrapper">
+          <!-- Plates -->
+          <div class="plate-item active" id="plate-0">
+            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80" alt="Fresh Salad"
+              loading="eager">
+          </div>
+          <div class="plate-item" id="plate-1">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Pizza"
+              loading="lazy">
+          </div>
+          <div class="plate-item" id="plate-2">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" alt="Burger"
+              loading="lazy">
+          </div>
+          <div class="plate-item" id="plate-3">
+            <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c3?w=600&q=80" alt="Grilled Chicken"
+              loading="lazy">
+          </div>
+
+          <!-- Decorative rings -->
+          <div class="plate-ring"></div>
+          <div class="plate-dots" id="plate-dots"></div>
+
+          <!-- Indicators -->
+          <div class="slide-indicators">
+            <div class="slide-dot active" onclick="goToPlate(0)"></div>
+            <div class="slide-dot" onclick="goToPlate(1)"></div>
+            <div class="slide-dot" onclick="goToPlate(2)"></div>
+            <div class="slide-dot" onclick="goToPlate(3)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini Card -->
+    <div class="mini-card">
+      <div class="mini-card-img" id="mini-img">
+        <img id="mini-food-img" src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=120&q=80" alt="food">
+      </div>
+      <div class="mini-card-info">
+        <h4 id="mini-name">BBQ Platter</h4>
+        <p id="mini-desc">A bold smoky grill platter<br>with chicken & beef skewers</p>
+        <div class="mini-price" id="mini-price">৳ 850</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave -->
+  <span class="wave-sep">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px">
+      <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#1C0A00" />
+    </svg>
+  </span>
+
+  <!-- ════ BRANCHES ════ -->
+  <section class="branches-section" id="branches">
+    <p class="section-eyebrow reveal"><i class="fas fa-location-dot"></i> Find Us Around The City</p>
+    <h2 class="section-title reveal">Our 4 Branches in <span>Rajshahi</span></h2>
+    <p class="section-sub reveal">Each Aurora branch has its own specialty — visit whichever is closest, or try them
+      all!</p>
+
+    <div class="branches-grid">
+      <div class="branch-card reveal reveal-delay-1">
+        <div class="branch-badge"></div>
+        <div class="branch-icon"><i class="fa fa-burger"></i></div>
+        <h3>Aurora </h3>
+        <p>Mohila College Road, Kadirgonj, Boalia, Rajshahi<br>The original branch — burgers, fries, wraps, and more.
+        </p>
+        <span class="branch-tag"><i class="fa fa-fire-flame-curved"></i> Fast Food · Pizza</span>
+      </div>
+      <div class="branch-card reveal reveal-delay-2">
+        <div class="branch-badge"></div>
+        <div class="branch-icon"><i class="fa fa-fire"></i></div>
+        <h3>Aurora 2</h3>
+        <p>Malopara, Kadirgonj (Beside Arman Tower), Rajshahi<br>Smoky BBQ delights, juicy steaks, and sizzling
+          platters.</p>
+        <span class="branch-tag"><i class="fa fa-drumstick-bite"></i> BBQ · Grill · Burgers</span>
+      </div>
+      <div class="branch-card reveal reveal-delay-3">
+        <div class="branch-badge"></div>
+        <div class="branch-icon"><i class="fa fa-pizza-slice"></i></div>
+        <h3>Aurora 3</h3>
+        <p> In front of Govt. Mohila College, Kadirgonj, Rajshahi<br>Wood-fired pizza, pasta, and Italian-inspired
+          flavours.</p>
+        <span class="branch-tag"><i class="fa fa-pizza-slice"></i> Pizza · Pasta · Snacks</span>
+      </div>
+      <div class="branch-card reveal reveal-delay-4">
+        <div class="branch-badge"></div>
+        <div class="branch-icon"><i class="fa fa-star"></i></div>
+        <h3>Aurora 4</h3>
+        <p>In front of Govt. Mohila College, Kadirgonj, Rajshahi<br>Full-service dining with every Aurora specialty
+          under one roof.</p>
+        <span class="branch-tag"><i class="fa fa-crown"></i> All Menus · Fine Dine</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave -->
+  <span class="wave-sep">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px">
+      <path d="M0,30 C360,0 1080,60 1440,30 L1440,0 L0,0 Z" fill="#1C0A00" />
+    </svg>
+  </span>
+
+  <!-- ════ MENU ════ -->
+  <section class="menu-section" id="menu">
+    <p class="section-eyebrow reveal"><i class="fas fa-fire"></i> What's Cooking?</p>
+    <h2 class="section-title reveal">Our <span>Signature</span> Menu</h2>
+    <p class="section-sub reveal">From street-style fast food to premium BBQ — Aurora has something for every craving.
+    </p>
+
+    <div class="menu-tabs">
+      <button class="tab-btn active" onclick="filterMenu('all', this)">All Items</button>
+      <button class="tab-btn" onclick="filterMenu('fastfood', this)">Fast Food</button>
+      <button class="tab-btn" onclick="filterMenu('pizza', this)">Pizza</button>
+      <button class="tab-btn" onclick="filterMenu('bbq', this)">BBQ & Grill</button>
+      <button class="tab-btn" onclick="filterMenu('burger', this)">Burgers</button>
+      <button class="tab-btn" onclick="filterMenu('drinks', this)">Drinks</button>
+    </div>
+
+    <div class="menu-grid" id="menu-grid">
+      <!-- Cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- ════ GALLERY ════ -->
+  <section class="gallery-section" id="gallery">
+    <p class="section-eyebrow reveal"><i class="fas fa-camera"></i> A Feast for the Eyes</p>
+    <h2 class="section-title reveal">Inside <span>Aurora</span></h2>
+    <div class="gallery-grid reveal">
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=700&q=80"
+          alt="Pizza" loading="lazy">
+        <div class="gal-overlay"><span class="gal-label"><i class="fas fa-pizza-slice"></i> Margherita Special</span>
+        </div>
+      </div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80"
+          alt="Burger" loading="lazy">
+        <div class="gal-overlay"><span class="gal-label"><i class="fas fa-burger"></i> Signature Burger</span></div>
+      </div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=500&q=80" alt="BBQ"
+          loading="lazy">
+        <div class="gal-overlay"><span class="gal-label"><i class="fas fa-fire"></i> BBQ Platter</span></div>
+      </div>
+      <div class="gal-item" style="grid-row:span 2"><img
+          src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&q=80" alt="Salad" loading="lazy">
+        <div class="gal-overlay"><span class="gal-label"><i class="fas fa-leaf"></i> Garden Fresh Salad</span></div>
+      </div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?w=500&q=80"
+          alt="Fries" loading="lazy">
+        <div class="gal-overlay"><span class="gal-label"><i class="fas fa-drumstick-bite"></i> Crispy Fries</span></div>
+      </div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=500&q=80"
+          alt="Shake" loading="lazy">
+        <div class="gal-overlay"><span class="gal-label"><i class="fas fa-wine-glass"></i> Aurora Shake</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ DELIVERY ════ -->
+  <div style="padding:0 0 80px">
+    <div class="delivery-section reveal" id="delivery">
+      <p class="section-eyebrow"><i class="fas fa-motorcycle"></i> We Come to You</p>
+      <h2 class="section-title">Order Aurora Online — <span style="color:var(--gold)">Delivered Hot</span></h2>
+      <p>Can't make it to our branches? No problem. Aurora delivers your favourite meals right to your doorstep through
+        Foodpanda and our Facebook page. Hot, fresh, and on time.</p>
+
+      <div class="delivery-platforms">
+        <a href="#" class="platform-btn" onclick="showToast('🐼 Redirecting to Foodpanda...'); return false;">
+          <i class="fa-brands fa-app-store fa" style="color:#EE2D5B;font-size:1.4rem"></i>
+          <span>Order on <strong>Foodpanda</strong></span>
+        </a>
+        <a href="#" class="platform-btn" onclick="showToast('📘 Opening Facebook page...'); return false;">
+          <i class="fa-brands fa-facebook-messenger" style="color:#1877F2;font-size:1.4rem"></i>
+          <span>Order via <strong>Facebook</strong></span>
+        </a>
+        <a href="tel:+8801700000000" class="platform-btn">
+          <i class="fa fa-phone" style="color:var(--orange);font-size:1.3rem"></i>
+          <span>Call to <strong>Order</strong></span>
+        </a>
+      </div>
+
+      <div class="delivery-stats">
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Branches in Rajshahi</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Daily Orders</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4.8★</div>
+          <div class="stat-label">Customer Rating</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">30min</div>
+          <div class="stat-label">Avg. Delivery Time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ TESTIMONIALS ════ -->
+  <section class="testimonials-section">
+    <p class="section-eyebrow reveal"><i class="fas fa-comments"></i> What People Say</p>
+    <h2 class="section-title reveal">Loved by <span>Rajshahi</span></h2>
+    <div class="reviews-track" id="reviews-track">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- ════ CTA ════ -->
+  <section class="cta-banner" id="contact">
+    <p class="section-eyebrow"><i class="fas fa-heart"></i> Let's Feed You</p>
+    <h2 class="section-title">Ready to Experience <span style="color:var(--orange)">Aurora?</span></h2>
+    <p style="color:rgba(255,255,255,0.65);max-width:480px;margin:0 auto 40px;line-height:1.7">Visit any of our 4
+      branches in Rajshahi, or order online. Fresh food, happy people — every day.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:50px">
+      <button class="btn-solid" style="padding:16px 40px;font-size:1.05rem" onclick="showToast('📞 Calling Aurora...')">
+        <i class="fa fa-phone"></i> Call Us Now
+      </button>
+      <button class="btn-outline"
+        style="padding:16px 40px;font-size:1.05rem;border-color:rgba(255,255,255,0.4);color:white"
+        onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">
+        <i class="fa fa-book-open"></i> View Full Menu
+      </button>
+    </div>
+    <div
+      style="display:flex;justify-content:center;gap:28px;flex-wrap:wrap;font-size:0.9rem;color:rgba(255,255,255,0.5)">
+      <span><i class="fa fa-map-marker-alt" style="color:var(--orange)"></i> Saheb Bazar</span>
+      <span><i class="fa fa-map-marker-alt" style="color:var(--orange)"></i> Laxmipur</span>
+      <span><i class="fa fa-map-marker-alt" style="color:var(--orange)"></i> Uposhohor</span>
+      <span><i class="fa fa-map-marker-alt" style="color:var(--orange)"></i> Rajpara</span>
+    </div>
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="display:inline-flex;margin-bottom:16px"><i class="fas fa-star logo-star"></i>
+          Au<span>rora</span></div>
+        <p>Rajshahi's favourite restaurant group. Four branches, one soul — serving delicious food since 2018.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#branches">Branches</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#delivery">Order Online</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="#">Fast Food</a></li>
+          <li><a href="#">Pizza & Pasta</a></li>
+          <li><a href="#">BBQ & Grill</a></li>
+          <li><a href="#">Burgers</a></li>
+          <li><a href="#">Beverages</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+8801700000000"><i class="fa fa-phone"></i> +880 17XX XXX XXX</a></li>
+          <li><a href="mailto:hello@aurora-bd.com"><i class="fa fa-envelope"></i> hello@aurora-bd.com</a></li>
+          <li><a href="#"><i class="fa fa-clock"></i> Open 11am – 11pm</a></li>
+          <li><a href="#"><i class="fa fa-location-dot"></i> Rajshahi, Bangladesh</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Aurora Restaurant Group, Rajshahi. All rights reserved.</span>
+      <span>Designed with <i class="fa fa-heart" style="color:var(--orange)"></i> for Aurora</span>
+    </div>
+  </footer>
+
+  <script>
+    // ── MENU DATA ──
+    const menuItems = [
+      { name: 'Aurora Smash Burger', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80', cat: 'burger', price: '৳ 320', desc: 'Double smashed patty, secret sauce, pickles & cheddar.', badge: 'Best Seller' },
+      { name: 'BBQ Platter for 2', img: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=400&q=80', cat: 'bbq', price: '৳ 850', desc: 'Mixed grill: chicken, beef skewers, grilled veggies.', badge: 'Sharable' },
+      { name: 'Margherita Pizza', img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80', cat: 'pizza', price: '৳ 480', desc: 'Fresh tomato, mozzarella, basil — classic done right.', badge: '' },
+      { name: 'Crispy Fried Chicken', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400&q=80', cat: 'fastfood', price: '৳ 299', desc: 'Golden crunchy crust, tender juicy inside — Aurora style.', badge: 'New' },
+      { name: 'BBQ Beef Burger', img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80', cat: 'burger', price: '৳ 380', desc: 'Smoky BBQ sauce, caramelised onions, jalapeños.', badge: '' },
+      { name: 'Pepperoni Feast', img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80', cat: 'pizza', price: '৳ 560', desc: 'Loaded with premium pepperoni & extra cheese.', badge: 'Spicy' },
+      { name: 'Aurora Loaded Fries', img: 'https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400&q=80', cat: 'fastfood', price: '৳ 199', desc: 'Crinkle fries with cheese sauce, bacon bits & jalapenos.', badge: '' },
+      { name: 'Aurora Signature Shake', img: 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400&q=80', cat: 'drinks', price: '৳ 220', desc: 'Thick milkshake in chocolate, vanilla, or strawberry.', badge: 'Trending' },
+      { name: 'Chicken Tikka Wings', img: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=80', cat: 'bbq', price: '৳ 390', desc: 'Tandoori-marinated wings, char-grilled to perfection.', badge: '' },
+      { name: 'Mango Lassi', img: 'https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400&q=80', cat: 'drinks', price: '৳ 150', desc: 'Creamy mango, fresh yoghurt, cardamom.', badge: '' },
+      { name: 'BBQ Chicken Pizza', img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80', cat: 'pizza', price: '৳ 520', desc: 'Smoky BBQ base, grilled chicken, caramelised onions.', badge: 'Fan Fav' },
+      { name: 'Classic Combo Meal', img: 'https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=400&q=80', cat: 'fastfood', price: '৳ 450', desc: 'Burger + fries + cola — the full Aurora experience.', badge: 'Value' },
+    ];
+
+    let currentFilter = 'all';
+
+    function renderMenu(filter) {
+      const grid = document.getElementById('menu-grid');
+      const filtered = filter === 'all' ? menuItems : menuItems.filter(m => m.cat === filter);
+      const catLabel = { burger: 'Burgers', bbq: 'BBQ & Grill', pizza: 'Pizza', fastfood: 'Fast Food', drinks: 'Drinks' };
+      grid.innerHTML = filtered.map((item, i) => `
+    <div class="menu-card reveal" style="transition-delay:${i * 0.06}s">
+      <div class="menu-card-img">
+        <img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80'">
+        ${item.badge ? `<div class="menu-card-badge">${item.badge}</div>` : ''}
+        <button class="menu-like-btn" onclick="this.classList.toggle('liked');event.stopPropagation()"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-tag"><i class="fas fa-tag"></i> ${catLabel[item.cat] || item.cat}</div>
+        <h3>${item.name}</h3>
+        <p>${item.desc}</p>
+        <div class="menu-rating">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i>
+          <span>4.5 (120+)</span>
+        </div>
+      </div>
+      <div class="menu-card-footer">
+        <span class="menu-price">${item.price}</span>
+        <button class="add-btn" onclick="showToast('\u2705 ${item.name} added!')"><i class="fas fa-cart-plus"></i></button>
+      </div>
+    </div>
+  `).join('');
+      observeReveal();
+    }
+
+    function filterMenu(cat, btn) {
+      currentFilter = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMenu(cat);
+    }
+
+    // ── REVIEWS ──
+    const reviews = [
+      { name: 'Rafiqul Islam', loc: 'Saheb Bazar, Rajshahi', text: 'The BBQ platter at Aurora is absolutely unreal! Been coming every week. Best food in Rajshahi.', stars: 5 },
+      { name: 'Sadia Akter', loc: 'Uposhohor, Rajshahi', text: 'Ordered pizza via Foodpanda — arrived hot and fresh! The pepperoni feast is my go-to.', stars: 5 },
+      { name: 'Nasim Hossain', loc: 'Laxmipur, Rajshahi', text: 'Aurora BBQ House has the most amazing chicken tikka wings. The ambience is great too!', stars: 5 },
+      { name: 'Mim Rahman', loc: 'Rajpara, Rajshahi', text: 'Love the aurora smash burger — juicy, messy, perfect. And the loaded fries? Addictive!', stars: 5 },
+      { name: 'Tanvir Ahmed', loc: 'Rajshahi City', text: 'Fast delivery, super fresh food, and the mango lassi is seasonal heaven. 10/10.', stars: 5 },
+    ];
+
+    function renderReviews() {
+      const track = document.getElementById('reviews-track');
+      track.innerHTML = reviews.map(r => `
+    <div class="review-card">
+      <div class="review-stars">${'★'.repeat(r.stars)}</div>
+      <p class="review-text">"${r.text}"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">${r.name.charAt(0)}</div>
+        <div>
+          <div class="reviewer-name">${r.name}</div>
+          <div class="reviewer-loc"><i class="fa fa-location-dot" style="color:var(--orange);font-size:0.75rem"></i> ${r.loc}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+    }
+
+    // ── PLATE CAROUSEL ──
+    const plateData = [
+      { img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&q=80', name: 'Garden Salad', desc: 'Fresh & Light', price: '৳ 250' },
+      { img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=120&q=80', name: 'Margherita Pizza', desc: 'Oven-Fresh', price: '৳ 480' },
+      { img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=120&q=80', name: 'Smash Burger', desc: 'Aurora Classic', price: '৳ 320' },
+      { img: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c3?w=120&q=80', name: 'Grilled Chicken', desc: 'BBQ Signature', price: '৳ 450' },
+    ];
+    let currentPlate = 0;
+    let plateTimer;
+
+    function goToPlate(idx) {
+      document.getElementById(`plate-${currentPlate}`).classList.remove('active');
+      document.querySelectorAll('.slide-dot')[currentPlate].classList.remove('active');
+      currentPlate = idx;
+      document.getElementById(`plate-${currentPlate}`).classList.add('active');
+      document.querySelectorAll('.slide-dot')[currentPlate].classList.add('active');
+      // Update mini card
+      const d = plateData[currentPlate];
+      document.getElementById('mini-food-img').src = d.img;
+      document.getElementById('mini-name').textContent = d.name;
+      document.getElementById('mini-desc').textContent = d.desc;
+      document.getElementById('mini-price').textContent = d.price;
+      resetPlateTimer();
+    }
+
+    function nextPlate() { goToPlate((currentPlate + 1) % plateData.length); }
+
+    function resetPlateTimer() {
+      clearInterval(plateTimer);
+      plateTimer = setInterval(nextPlate, 3500);
+    }
+
+    // Draw dots on orbit
+    function drawPlateDots() {
+      const container = document.getElementById('plate-dots');
+      const count = 8;
+      for (let i = 0; i < count; i++) {
+        const angle = (360 / count) * i;
+        const dot = document.createElement('div');
+        dot.className = 'plate-dot';
+        const rad = angle * Math.PI / 180;
+        const r = 200; // half of 400px
+        dot.style.left = `${50 + 50 * Math.cos(rad)}%`;
+        dot.style.top = `${50 + 50 * Math.sin(rad)}%`;
+        dot.style.transform = 'translate(-50%,-50%)';
+        container.appendChild(dot);
+      }
+    }
+
+    // ── CURSOR ──
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .menu-card, .branch-card, .gal-item').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+    });
+
+    // ── TOAST ──
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    // ── NAV SCROLL ──
+    function updateNav() {
+      const nav = document.getElementById('navbar');
+      const hero = document.getElementById('hero');
+      const heroBottom = hero ? (hero.offsetTop + hero.offsetHeight - 80) : 600;
+      if (window.scrollY < heroBottom) {
+        nav.classList.add('hero-mode');
+        nav.classList.remove('scrolled');
+      } else {
+        nav.classList.remove('hero-mode');
+      }
+      if (window.scrollY > 60) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+      const st = document.getElementById('scroll-top');
+      if (window.scrollY > 400) st.classList.add('show'); else st.classList.remove('show');
+    }
+    window.addEventListener('scroll', updateNav);
+    updateNav();
+
+    // ── HAMBURGER ──
+    function toggleMenu() {
+      const ham = document.getElementById('hamburger');
+      const menu = document.getElementById('mobile-menu');
+      ham.classList.toggle('open');
+      menu.classList.toggle('open');
+    }
+    function closeMobileMenu() {
+      document.getElementById('hamburger').classList.remove('open');
+      document.getElementById('mobile-menu').classList.remove('open');
+    }
+
+    // ── REVEAL OBSERVER ──
+    function observeReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    // ── INIT ──
+    drawPlateDots();
+    renderMenu('all');
+    renderReviews();
+    observeReveal();
+    resetPlateTimer();
+
+    // Re-observe after tab filter
+    const origFilter = filterMenu;
+  </script>
+</body>
+
+</html>
