@@ -31,6 +31,12 @@
       padding: 0;
     }
 
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+
     html {
       scroll-behavior: smooth;
     }
@@ -39,7 +45,6 @@
       font-family: 'Outfit', sans-serif;
       background: #ECEAE6;
       color: var(--dark);
-      overflow-x: hidden;
     }
 
     /* ─── CURSOR ─── */
@@ -1598,10 +1603,34 @@
         grid-row: auto;
         grid-column: auto;
       }
+
+      .hero-text {
+        max-width: 55%;
+      }
+
+      .hero-plate-zone {
+        width: 400px;
+        height: 400px;
+        right: -10px;
+        top: 20px;
+      }
+
+      .plate-wrapper {
+        width: 340px;
+        height: 340px;
+      }
+
+      .plate-item {
+        width: 300px;
+        height: 300px;
+      }
+
+      .hero-title {
+        font-size: 6rem;
+      }
     }
 
     @media (max-width: 768px) {
-
       .nav-links,
       .nav-cta {
         display: none;
@@ -1611,20 +1640,37 @@
         display: flex;
       }
 
+      nav {
+        padding: 16px 20px;
+      }
+
       .hero {
-        margin: 12px 12px 40px;
-        border-radius: 28px;
+        margin: 0 0 40px 0;
+        border-radius: 0 0 36px 36px;
         min-height: auto;
       }
 
       .hero-inner {
-        padding: 80px 6% 140px;
+        padding: 90px 6% 100px;
         min-height: auto;
+      }
+
+      .hero-title {
+        font-size: clamp(3.5rem, 12vw, 5rem);
       }
 
       .hero-text {
         max-width: 100%;
         text-align: center;
+      }
+
+      .hero-title .script-word {
+        padding-left: 0;
+        text-align: center;
+        display: inline-block;
+        margin-top: 0;
+        margin-left: 8px;
+        font-size: 2.2em;
       }
 
       .hero-desc {
@@ -1641,25 +1687,25 @@
         right: auto;
         top: auto;
         width: 100%;
-        height: 280px;
-        margin-top: 20px;
+        height: 320px;
+        margin-top: 40px;
       }
 
       .plate-wrapper {
-        width: 260px;
-        height: 260px;
+        width: 300px;
+        height: 300px;
       }
 
       .plate-item {
-        width: 240px;
-        height: 240px;
+        width: 270px;
+        height: 270px;
       }
 
       .mini-card {
         left: 50%;
         transform: translateX(-50%);
         bottom: 20px;
-        min-width: 240px;
+        min-width: 280px;
       }
 
       .gallery-grid {
